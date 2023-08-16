@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+version = "0.1"
+name = "virtual-cursor"
+description = "Write responsive web apps in full python"
+
+authors = [
+  { name="Florian Scherf", email="mail@florianscherf.de" },
+]
+
+license = { file="LICENSE.txt" }
+readme = "README.md"
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Web Environment",
+  "Framework :: AsyncIO",
+  "Framework :: Django",
+  "Framework :: Pytest",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: Unix",
+  "Programming Language :: JavaScript",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Internet",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+requires-python = ">=3.8"
+
+dependencies = []
+
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "twine",
+  "tox",
+  "lona==1.15",
+  "lona-picocss==0.4.1",
+  "coverage==7.2.7",
+  "pytest==7.4.0",
+  "pytest-aiohttp==1.0.4",
+  "pytest-timeout==2.1.0",
+  "playwright==1.36.0",
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/fscherf/virtual-cursor"
+"Repository" = "https://github.com/fscherf/virtual-cursor"
+"Bug Tracker" = "https://github.com/fscherf/virtual-cursor/issues"
+
+
+[project.entry-points.pytest11]
+virtual_cursor = "virtual_cursor.pytest"
+
+
+[tool.setuptools]
+include-package-data = true
+script-files = []
+
+[tool.setuptools.packages.find]
+include = ['virtual_cursor*']
+
+[tool.setuptools.package-data]
+"virtual_cursor" = ["*.js"]
+
+[tool.setuptools.exclude-package-data]
+"*" = [
+  ".*",
+  "~*",
+  "*.swp",
+  "*.pyc",
+]

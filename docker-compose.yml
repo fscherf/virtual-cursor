@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+    playwright:
+        user: 1000:1000
+
+        build:
+            context: ./
+            dockerfile: playwright.Dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
+
+        volumes:
+            - ./:/app
+
+        environment:
+            - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+        working_dir: "/app"
+        command: "tox"
+
+    imagemagick:
+        user: 1000:1000
+
+        build:
+            context: ./
+            dockerfile: imagemagick.Dockerfile
+
+        volumes:
+            - ./:/app
+
+        working_dir: "/app"
+        command: ["/app/scripts/convert-videos-to-gifs.sh"]
