@@ -32,10 +32,10 @@ build:
 	docker compose build $(args)
 
 test:
-	docker compose run tools tox $(args)
+	docker compose run playwright tox $(args)
 
 ci-test:
-	docker compose run tools tox -e lint,py38,py39,py310,py311 $(args)
+	docker compose run playwright tox -e lint,py38,py39,py310,py311 $(args)
 
 gifs:
 	rm doc/*.gif
