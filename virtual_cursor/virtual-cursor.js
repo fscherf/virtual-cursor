@@ -17,10 +17,130 @@
     const CURSOR_OFFSET_LEFT = -4;
     const CURSOR_OFFSET_TOP = -4;
 
+    const BROWSER_STYLE = `
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+            padding: 24px;
+        }
+
+        /* The browser window */
+        .container {
+            border: 3px solid #f1f1f1;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+
+        /* Container for columns and the top "toolbar" */
+        .row {
+            padding: 10px;
+            background: #f1f1f1;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        /* Create three unequal columns that floats next to each other */
+        .column {
+            float: left;
+        }
+
+        .left {
+            width: 15%;
+        }
+
+        .right {
+            width: 10%;
+        }
+
+        .middle {
+            width: 75%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Three dots */
+        .dot {
+            margin-top: 4px;
+            height: 12px;
+            width: 12px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Style the input field */
+        input[type=text] {
+            width: 100%;
+            border-radius: 3px;
+            border: none;
+            background-color: white;
+            margin-top: -8px;
+            height: 25px;
+            color: #666;
+            padding: 5px;
+        }
+
+        /* Three bars (hamburger menu) */
+        .bar {
+            width: 17px;
+            height: 3px;
+            background-color: #aaa;
+            margin: 3px 0;
+            display: block;
+        }
+
+        /* Page content */
+        .content {
+            padding: 10px;
+        }
+    `;
+
+    const BROWSER_HTML = `<div class="container">
+        <div class="row">
+            <div class="column left">
+                <span class="dot" style="background:#ED594A;"></span>
+                <span class="dot" style="background:#FDD800;"></span>
+                <span class="dot" style="background:#5AC05A;"></span>
+            </div>
+            <div class="column middle">
+                <input type="text" value="http://localhost">
+            </div>
+            <div class="column right">
+                <div style="float:right">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <iframe src="http://google.de"></iframe>
+        </div>
+    </div>`;
+
     function svgStringToElement(svgString) {
         return new DOMParser()
             .parseFromString(svgString, 'image/svg+xml')
             .documentElement;
+    }
+
+    function htmlStringToElement(htmlString) {
+        return new DOMParser()
+            .parseFromString(htmlString, 'text/html')
+            .documentElement.ownerDocument.body.childNodes[0];
     }
 
     function sleep(ms) {
@@ -187,11 +307,32 @@
     }
 
 
+    class VirtualBrowser {
+        constructor() {
+
+            // setup style
+            const styleElement = document.createElement('style');
+
+            styleElement.type = 'text/css';
+            styleElement.innerText = BROWSER_STYLE;
+
+            document.head.appendChild(styleElement);
+
+            // setup HTML
+            const htmlElement = htmlStringToElement(BROWSER_HTML);
+
+            document.body.appendChild(htmlElement);
+        }
+    }
+
+
     // setup
+    const virtualBrowser = new VirtualBrowser();
     const virtualCursor = new VirtualCursor();
 
     virtualCursor.moveToHome(false  /* animation */);
     virtualCursor.show();
 
+    window['virtualBrowser'] = virtualBrowser;
     window['virtualCursor'] = virtualCursor;
 })();
